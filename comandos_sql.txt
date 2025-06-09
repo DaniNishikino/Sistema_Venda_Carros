@@ -1,0 +1,35 @@
+create table Veiculo(
+    id uuid primary key not null,
+    marca varchar(100) not null ,
+    modelo varchar(100) not null ,
+    anoFabricacao smallint not null ,
+    anoModelo smallint not null ,
+    cor varchar(50) not null ,
+    placa varchar(10) not null unique ,
+    preco numeric(12,2) not null check ( preco >= 0 ),
+    descricao text,
+    disponivel boolean default true,
+    dataCadastro timestamptz default CURRENT_TIMESTAMP
+);
+CREATE INDEX IDX_Veiculo_Marca_Modelo ON Veiculo(marca, modelo);
+
+create TYPE tipo_papel as enum('GERENTE', 'VENDEDOR', 'CLIENTE');
+
+create table Usuario(
+    id uuid primary key not null,
+    nome varchar(150) not null ,
+    login varchar(150) not null unique ,
+    senha varchar(100) not null ,
+    papel tipo_papel not null
+);
+
+create table Venda(
+    id uuid primary key not null,
+    id_veiculo uuid not null references Veiculo(id),
+    id_usuario uuid not null references Usuario(id),
+    data_venda timestamptz not null default CURRENT_TIMESTAMP,
+    valor_venda numeric(12,2) not null check ( valor_venda >= 0)
+);
+
+create index IDX_Venda_IdVeiculo on Venda(id_veiculo);
+create index IDX_Venda_IdUsuario on Venda(id_usuario);

@@ -1,0 +1,12 @@
+services:
+  db:
+    image: postgres:17.0-alpine
+    container_name: db_vehicles
+    environment:
+      POSTGRES_DB: carros
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+volumes:
+  postgres_data:
