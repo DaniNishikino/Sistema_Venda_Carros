@@ -2,14 +2,14 @@ create table Veiculo(
     id uuid primary key not null,
     marca varchar(100) not null ,
     modelo varchar(100) not null ,
-    anoFabricacao smallint not null ,
-    anoModelo smallint not null ,
+    ano_fabricacao smallint not null ,
+    ano_modelo smallint not null ,
     cor varchar(50) not null ,
     placa varchar(10) not null unique ,
     preco numeric(12,2) not null check ( preco >= 0 ),
     descricao text,
     disponivel boolean default true,
-    dataCadastro timestamptz default CURRENT_TIMESTAMP
+    data_cadastro timestamptz default CURRENT_TIMESTAMP
 );
 CREATE INDEX IDX_Veiculo_Marca_Modelo ON Veiculo(marca, modelo);
 

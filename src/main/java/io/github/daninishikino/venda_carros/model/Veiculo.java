@@ -22,10 +22,10 @@ public class Veiculo {
     @Column(length = 100, nullable = false, name = "modelo")
     private String modelo;
 
-    @Column(nullable = false, name = "anoFabricacao")
+    @Column(nullable = false, name = "ano_fabricacao")
     private Integer anoFabricacao;
 
-    @Column(nullable = false, name = "anoModelo")
+    @Column(nullable = false, name = "ano_modelo")
     private Integer anoModelo;
 
     @Column(nullable = false, length = 50, name = "cor")
@@ -44,7 +44,7 @@ public class Veiculo {
     private Boolean disponivel;
 
     @CreationTimestamp
-    @Column(name = "dataCadastro", nullable = false, updatable = false)
+    @Column(name = "data_cadastro", nullable = false, updatable = false)
     private OffsetDateTime dataCadastro;
 
 
