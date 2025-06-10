@@ -13,14 +13,12 @@ create table Veiculo(
 );
 CREATE INDEX IDX_Veiculo_Marca_Modelo ON Veiculo(marca, modelo);
 
-create TYPE tipo_papel as enum('GERENTE', 'VENDEDOR', 'CLIENTE');
-
 create table Usuario(
     id uuid primary key not null,
     nome varchar(150) not null ,
     login varchar(150) not null unique ,
     senha varchar(100) not null ,
-    papel tipo_papel not null
+    papel varchar(20) NOT NULL CHECK (papel IN ('GERENTE', 'VENDEDOR', 'CLIENTE'))
 );
 
 create table Venda(

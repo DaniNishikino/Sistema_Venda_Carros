@@ -3,10 +3,10 @@ package io.github.daninishikino.venda_carros.controller;
 
 import io.github.daninishikino.venda_carros.controller.DTO.VeiculoDTO;
 import io.github.daninishikino.venda_carros.mapper.VeiculoMapper;
-import io.github.daninishikino.venda_carros.model.Veiculo;
 import io.github.daninishikino.venda_carros.service.VeiculoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,7 +17,6 @@ import java.util.List;
 public class VeiculoController {
 
     private final VeiculoService service;
-    private final VeiculoMapper mapper;
 
     @GetMapping
     public ResponseEntity<List<VeiculoDTO>> buscarTodos(){
@@ -26,23 +25,27 @@ public class VeiculoController {
     }
 
     @GetMapping("/{placa}")
+    @PreAuthorize("hasAnyRole('GERENTE', 'VENDEDOR')")
     public ResponseEntity<VeiculoDTO> buscarPorPlaca(@PathVariable String placa){
         VeiculoDTO response = service.buscarPelaPlaca(placa);
         return ResponseEntity.ok(response);
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('GERENTE')")
     public ResponseEntity<Void> salvarVeiculo(@RequestBody VeiculoDTO veiculoDTO){
-        service.salvar(mapper.toEntity(veiculoDTO));
+        service.salvar(veiculoDTO);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{placa}")
+    @PreAuthorize("hasRole('GERENTE')")
     public ResponseEntity<VeiculoDTO> atualizarVeiculo(@PathVariable String placa, @RequestBody VeiculoDTO veiculoDTO){
-        return ResponseEntity.ok(service.atualizar(placa, mapper.toEntity(veiculoDTO)));
+        return ResponseEntity.ok(service.atualizar(placa, veiculoDTO));
     }
 
     @DeleteMapping("/{placa}")
+    @PreAuthorize("hasRole('GERENTE')")
     public ResponseEntity<Void> deletarVeiculo(@PathVariable String placa){
         service.deletar(placa);
         return ResponseEntity.noContent().build();
