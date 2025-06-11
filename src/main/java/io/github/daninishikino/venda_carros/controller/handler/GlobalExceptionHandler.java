@@ -1,60 +1,77 @@
 package io.github.daninishikino.venda_carros.controller.handler;
 
+import io.github.daninishikino.venda_carros.controller.DTO.ErrorResponse;
 import io.github.daninishikino.venda_carros.exceptions.usuario.AcessoNegadoException;
 import io.github.daninishikino.venda_carros.exceptions.usuario.UsuarioNaoEncontradoException;
-import io.github.daninishikino.venda_carros.exceptions.veiculo.DadosSensiveisException;
 import io.github.daninishikino.venda_carros.exceptions.veiculo.VeiculoNaoEncontradoException;
+import io.github.daninishikino.venda_carros.exceptions.veiculo.VeiculosDadosSensiveisException;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(AcessoNegadoException.class)
-    public ResponseEntity<Object> handleAcessoNegadoException(AcessoNegadoException e){
-        return ResponseEntity
-                .status(HttpStatus.FORBIDDEN)
-                .body(e.getMessage());
+    public ResponseEntity<ErrorResponse> handleAcessoNegadoException(AcessoNegadoException e,
+                                                              HttpServletRequest request){
+        String erro = "Acesso negado, não possui a permissão para isso.";
+       return buildErrorResponse(e, HttpStatus.FORBIDDEN,List.of(erro), request);
     }
     @ExceptionHandler(UsuarioNaoEncontradoException.class)
-    public ResponseEntity<Object> handleUsuarioNaoEncontradoException(UsuarioNaoEncontradoException e){
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(e.getMessage());
+    public ResponseEntity<ErrorResponse> handleUsuarioNaoEncontradoException(UsuarioNaoEncontradoException e,
+                                                                      HttpServletRequest request){
+        String erro = "Não foi posssivel encontrar o usuario";
+       return buildErrorResponse(e, HttpStatus.NOT_FOUND, List.of(erro), request);
     }
-    @ExceptionHandler(DadosSensiveisException.class)
-    public ResponseEntity<Object> handleDadosSensiveisException(DadosSensiveisException e){
-        return ResponseEntity
-                .status(HttpStatus.NOT_ACCEPTABLE)
-                .body(e.getMessage());
+    @ExceptionHandler(VeiculosDadosSensiveisException.class)
+    public ResponseEntity<ErrorResponse> handleVeiculosDadosSensiveisException(VeiculosDadosSensiveisException e,
+                                                                               HttpServletRequest request){
+        String erro = "Dados sensiveis de veiculo, não podem ser alterados";
+        return buildErrorResponse(e, HttpStatus.NOT_ACCEPTABLE, List.of(erro), request);
     }
     @ExceptionHandler(VeiculoNaoEncontradoException.class)
-    public ResponseEntity<Object> handleVeiculoNaoEncontradoException(VeiculoNaoEncontradoException e){
-        return ResponseEntity
-                .status(HttpStatus.NOT_FOUND)
-                .body(e.getMessage());
+    public ResponseEntity<ErrorResponse> handleVeiculoNaoEncontradoException(VeiculoNaoEncontradoException e,
+                                                                             HttpServletRequest request){
+        String erro = "Veiculo não foi encontrado";
+        return buildErrorResponse(e, HttpStatus.NOT_FOUND, List.of(erro), request);
     }
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Object> handleValidationExceptions(MethodArgumentNotValidException e){
+    public ResponseEntity<ErrorResponse> handleValidationExceptions(MethodArgumentNotValidException e,
+                                                                    HttpServletRequest request){
         List<String> erros  = e.getBindingResult()
                 .getFieldErrors()
                 .stream()
                 .map(erro -> erro.getField() + ": " + erro.getDefaultMessage())
                 .toList();
-        return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
-                .body(erros);
+        return buildErrorResponse(e, HttpStatus.BAD_REQUEST, erros, request);
+
+    }
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleGenericException(Exception e,
+                                                                HttpServletRequest request){
+        return buildErrorResponse(
+                e, HttpStatus.INTERNAL_SERVER_ERROR,
+                List.of("Erro interno, contate o suporte."),
+                request);
     }
 
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<Object> handleInternalServerError (RuntimeException e){
-        return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body("Ocorreu um erro inesperado, contate o provedor do sistema");
+
+    private  ResponseEntity<ErrorResponse> buildErrorResponse(
+            Exception e, HttpStatus status, List<String > error, HttpServletRequest request){
+        ErrorResponse body = new ErrorResponse(
+                LocalDateTime.now(),
+                status.value(),
+                error,
+                e.getMessage(),
+                request.getRequestURI()
+        );
+        return ResponseEntity.status(status).body(body);
     }
 }

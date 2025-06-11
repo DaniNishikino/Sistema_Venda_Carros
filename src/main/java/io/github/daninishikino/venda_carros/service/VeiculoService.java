@@ -2,7 +2,7 @@ package io.github.daninishikino.venda_carros.service;
 
 
 import io.github.daninishikino.venda_carros.controller.DTO.VeiculoDTO;
-import io.github.daninishikino.venda_carros.exceptions.veiculo.DadosSensiveisException;
+import io.github.daninishikino.venda_carros.exceptions.veiculo.VeiculosDadosSensiveisException;
 import io.github.daninishikino.venda_carros.exceptions.veiculo.VeiculoNaoEncontradoException;
 import io.github.daninishikino.venda_carros.mapper.VeiculoMapper;
 import io.github.daninishikino.venda_carros.model.Veiculo;
@@ -39,7 +39,7 @@ public class VeiculoService {
                 || (!veiculoParaAtualizar.getModelo().equals(veiculo.modelo()))
                 || (!veiculoParaAtualizar.getAnoFabricacao().equals(veiculo.anoFabricacao()))
                 || (!veiculoParaAtualizar.getAnoModelo().equals(veiculo.anoModelo()))){
-            throw new DadosSensiveisException("Dados sensiveis não podem ser alterados");
+            throw new VeiculosDadosSensiveisException("Dados sensiveis não podem ser alterados");
         }
 
         veiculoParaAtualizar.setDescricao(veiculo.descricao());
