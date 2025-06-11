@@ -4,6 +4,7 @@ package io.github.daninishikino.venda_carros.controller;
 import io.github.daninishikino.venda_carros.controller.DTO.VeiculoDTO;
 import io.github.daninishikino.venda_carros.mapper.VeiculoMapper;
 import io.github.daninishikino.venda_carros.service.VeiculoService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,14 +34,14 @@ public class VeiculoController {
 
     @PostMapping
     @PreAuthorize("hasRole('GERENTE')")
-    public ResponseEntity<Void> salvarVeiculo(@RequestBody VeiculoDTO veiculoDTO){
+    public ResponseEntity<Void> salvarVeiculo(@RequestBody @Valid VeiculoDTO veiculoDTO){
         service.salvar(veiculoDTO);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{placa}")
     @PreAuthorize("hasRole('GERENTE')")
-    public ResponseEntity<VeiculoDTO> atualizarVeiculo(@PathVariable String placa, @RequestBody VeiculoDTO veiculoDTO){
+    public ResponseEntity<VeiculoDTO> atualizarVeiculo(@PathVariable String placa, @RequestBody @Valid VeiculoDTO veiculoDTO){
         return ResponseEntity.ok(service.atualizar(placa, veiculoDTO));
     }
 

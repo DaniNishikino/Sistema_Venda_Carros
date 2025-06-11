@@ -3,6 +3,7 @@ package io.github.daninishikino.venda_carros.controller;
 import io.github.daninishikino.venda_carros.controller.DTO.UsuarioDTO;
 import io.github.daninishikino.venda_carros.mapper.UsuarioMapper;
 import io.github.daninishikino.venda_carros.service.UsuarioService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,12 +24,12 @@ public class UsuarioController {
         return ResponseEntity.ok(usuarioDTO);
     }
     @PostMapping
-    public ResponseEntity<Void> criarUsuario(@RequestBody UsuarioDTO dto){
+    public ResponseEntity<Void> criarUsuario(@RequestBody @Valid UsuarioDTO dto){
         service.salvar(mapper.toEntity(dto));
         return ResponseEntity.noContent().build();
     }
     @PutMapping("/{login}")
-    public ResponseEntity<UsuarioDTO> atualizarUsuario(@PathVariable String login, @RequestBody UsuarioDTO usuarioDTO){
+    public ResponseEntity<UsuarioDTO> atualizarUsuario(@PathVariable String login, @RequestBody @Valid UsuarioDTO usuarioDTO){
         UsuarioDTO usuario = service.atualizarUsuario(login, usuarioDTO);
         return ResponseEntity.ok(usuario);
     }

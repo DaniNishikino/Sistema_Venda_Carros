@@ -34,7 +34,7 @@ public class VeiculoService {
 
     public VeiculoDTO atualizar(String placa, VeiculoDTO veiculo){
         Veiculo veiculoParaAtualizar = repository.findByPlaca(placa).orElseThrow(() ->
-                new IllegalArgumentException("Placa não encontrada"));
+                new VeiculoNaoEncontradoException("Placa não encontrada"));
         if (!veiculoParaAtualizar.getMarca().equals(veiculo.marca())
                 || (!veiculoParaAtualizar.getModelo().equals(veiculo.modelo()))
                 || (!veiculoParaAtualizar.getAnoFabricacao().equals(veiculo.anoFabricacao()))
