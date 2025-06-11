@@ -1,4 +1,4 @@
-package io.github.daninishikino.venda_carros.controller;
+package io.github.daninishikino.venda_carros.controller.rest;
 
 import io.github.daninishikino.venda_carros.controller.DTO.request.UsuarioDTO;
 import io.github.daninishikino.venda_carros.mapper.UsuarioMapper;
@@ -9,6 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Controller responsável por gerenciar endpoints relacionados a usuários.
+ * Implementa operações CRUD e controle de acesso baseado em papéis.
+ */
 @RestController
 @RequestMapping("/usuarios")
 @RequiredArgsConstructor

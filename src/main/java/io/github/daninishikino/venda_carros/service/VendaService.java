@@ -6,7 +6,6 @@ import io.github.daninishikino.venda_carros.controller.DTO.response.VendaRespons
 import io.github.daninishikino.venda_carros.exceptions.usuario.UsuarioNaoEncontradoException;
 import io.github.daninishikino.venda_carros.exceptions.veiculo.VeiculoNaoDisponivelException;
 import io.github.daninishikino.venda_carros.exceptions.veiculo.VeiculoNaoEncontradoException;
-import io.github.daninishikino.venda_carros.mapper.UsuarioMapper;
 import io.github.daninishikino.venda_carros.mapper.VeiculoMapper;
 import io.github.daninishikino.venda_carros.model.Usuario;
 import io.github.daninishikino.venda_carros.model.Veiculo;
@@ -21,8 +20,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.parser.Entity;
-
+/**
+ * Serviço responsável por operações relacionadas a vendas de veículos.
+ * Gerencia o processo de venda e suas regras de negócio.
+ */
 @Service
 @RequiredArgsConstructor
 public class VendaService {
@@ -34,6 +35,21 @@ public class VendaService {
     private final VeiculoMapper veiculoMapper;
 
 
+    /**
+     * Realiza a venda de um veículo, verificando disponibilidade e obtendo usuário logado.
+     * O processo inclui:
+     * 1. Verificação da existência do veículo pela placa
+     * 2. Verificação da disponibilidade do veículo
+     * 3. Identificação do usuário (vendedor) logado
+     * 4. Marcação do veículo como indisponível
+     * 5. Registro da venda com valor igual ao preço do veículo
+     *
+     * @param dto DTO com a placa do veículo a ser vendido
+     * @return DTO com os dados completos da venda realizada
+     * @throws VeiculoNaoEncontradoException Se o veículo não for encontrado
+     * @throws VeiculoNaoDisponivelException Se o veículo não estiver disponível para venda
+     * @throws UsuarioNaoEncontradoException Se o usuário logado não for encontrado
+     */
     @Transactional
     public VendaResponseDTO realizarVenda(VendaRequestDTO dto){
         Veiculo veiculo = veiculoRepository.findByPlaca(dto.placaVeiculo())

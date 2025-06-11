@@ -1,4 +1,4 @@
-package io.github.daninishikino.venda_carros.controller;
+package io.github.daninishikino.venda_carros.controller.rest;
 
 
 import io.github.daninishikino.venda_carros.controller.DTO.request.VeiculoDTO;
@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Controller responsável por gerenciar endpoints relacionados a veículos.
+ * Implementa operações CRUD com controle de acesso baseado em papéis.
+ */
 @RestController
 @RequestMapping("/veiculos")
 @RequiredArgsConstructor

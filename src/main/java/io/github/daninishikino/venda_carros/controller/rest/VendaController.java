@@ -1,4 +1,4 @@
-package io.github.daninishikino.venda_carros.controller;
+package io.github.daninishikino.venda_carros.controller.rest;
 
 import io.github.daninishikino.venda_carros.controller.DTO.request.VendaRequestDTO;
 import io.github.daninishikino.venda_carros.controller.DTO.response.VendaResponseDTO;
@@ -12,6 +12,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Controller responsável por gerenciar endpoints relacionados a vendas de veículos.
+ * Atualmente implementa apenas a operação de realizar venda.
+ */
 @RestController
 @RequestMapping("/vendas")
 @RequiredArgsConstructor
