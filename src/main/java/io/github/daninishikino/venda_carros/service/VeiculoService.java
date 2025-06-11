@@ -1,7 +1,7 @@
 package io.github.daninishikino.venda_carros.service;
 
 
-import io.github.daninishikino.venda_carros.controller.DTO.VeiculoDTO;
+import io.github.daninishikino.venda_carros.controller.DTO.request.VeiculoDTO;
 import io.github.daninishikino.venda_carros.exceptions.veiculo.VeiculosDadosSensiveisException;
 import io.github.daninishikino.venda_carros.exceptions.veiculo.VeiculoNaoEncontradoException;
 import io.github.daninishikino.venda_carros.mapper.VeiculoMapper;

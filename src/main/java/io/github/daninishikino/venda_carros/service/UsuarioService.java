@@ -1,6 +1,6 @@
 package io.github.daninishikino.venda_carros.service;
 
-import io.github.daninishikino.venda_carros.controller.DTO.UsuarioDTO;
+import io.github.daninishikino.venda_carros.controller.DTO.request.UsuarioDTO;
 import io.github.daninishikino.venda_carros.exceptions.usuario.AcessoNegadoException;
 import io.github.daninishikino.venda_carros.exceptions.usuario.UsuarioNaoEncontradoException;
 import io.github.daninishikino.venda_carros.mapper.UsuarioMapper;

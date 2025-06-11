@@ -1,8 +1,7 @@
 package io.github.daninishikino.venda_carros.controller;
 
 
-import io.github.daninishikino.venda_carros.controller.DTO.VeiculoDTO;
-import io.github.daninishikino.venda_carros.mapper.VeiculoMapper;
+import io.github.daninishikino.venda_carros.controller.DTO.request.VeiculoDTO;
 import io.github.daninishikino.venda_carros.service.VeiculoService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package io.github.daninishikino.venda_carros.controller.DTO;
+package io.github.daninishikino.venda_carros.controller.DTO.request;
 
 import io.github.daninishikino.venda_carros.model.enums.Papel;
 import jakarta.validation.constraints.NotBlank;

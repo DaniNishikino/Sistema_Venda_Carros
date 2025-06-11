@@ -1,6 +1,6 @@
 package io.github.daninishikino.venda_carros.mapper;
 
-import io.github.daninishikino.venda_carros.controller.DTO.UsuarioDTO;
+import io.github.daninishikino.venda_carros.controller.DTO.request.UsuarioDTO;
 import io.github.daninishikino.venda_carros.model.Usuario;
 import org.mapstruct.Mapper;
 

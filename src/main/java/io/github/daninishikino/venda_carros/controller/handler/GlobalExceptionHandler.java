@@ -1,8 +1,9 @@
 package io.github.daninishikino.venda_carros.controller.handler;
 
-import io.github.daninishikino.venda_carros.controller.DTO.ErrorResponse;
+import io.github.daninishikino.venda_carros.controller.DTO.response.ErrorResponse;
 import io.github.daninishikino.venda_carros.exceptions.usuario.AcessoNegadoException;
 import io.github.daninishikino.venda_carros.exceptions.usuario.UsuarioNaoEncontradoException;
+import io.github.daninishikino.venda_carros.exceptions.veiculo.VeiculoNaoDisponivelException;
 import io.github.daninishikino.venda_carros.exceptions.veiculo.VeiculoNaoEncontradoException;
 import io.github.daninishikino.venda_carros.exceptions.veiculo.VeiculosDadosSensiveisException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -53,16 +54,12 @@ public class GlobalExceptionHandler {
         return buildErrorResponse(e, HttpStatus.BAD_REQUEST, erros, request);
 
     }
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGenericException(Exception e,
-                                                                HttpServletRequest request){
-        return buildErrorResponse(
-                e, HttpStatus.INTERNAL_SERVER_ERROR,
-                List.of("Erro interno, contate o suporte."),
-                request);
+    @ExceptionHandler(VeiculoNaoDisponivelException.class)
+    public ResponseEntity<ErrorResponse> handleVeiculoNaoDisponivelException(VeiculoNaoDisponivelException e,
+                                                                             HttpServletRequest request){
+        String erro = "O Veiculo não está disponivel.";
+        return buildErrorResponse(e, HttpStatus.BAD_REQUEST, List.of(erro), request);
     }
-
-
     private  ResponseEntity<ErrorResponse> buildErrorResponse(
             Exception e, HttpStatus status, List<String > error, HttpServletRequest request){
         ErrorResponse body = new ErrorResponse(

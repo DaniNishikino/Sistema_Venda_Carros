@@ -1,6 +1,7 @@
-package io.github.daninishikino.venda_carros.controller.DTO;
+package io.github.daninishikino.venda_carros.controller.DTO.request;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
@@ -14,10 +15,10 @@ public record VeiculoDTO(
         @NotBlank(message = "O modelo é obrigatório")
         String modelo,
 
-        @NotBlank(message = "O ano de fabricação é obrigatório")
+        @NotNull(message = "O ano de fabricação é obrigatório")
         Integer anoFabricacao,
 
-        @NotBlank(message = "O ano do modelo é obrigatorio")
+        @NotNull(message = "O ano do modelo é obrigatorio")
         Integer anoModelo,
 
         @NotBlank(message = "A cor do carro é obrigatoria")
@@ -26,13 +27,13 @@ public record VeiculoDTO(
         @NotBlank(message = "A placa é obrigatória")
         String placa,
 
-        @NotBlank(message = "O preço do carro é obrigatorio")
+        @NotNull(message = "O preço do carro é obrigatorio")
         BigDecimal preco,
 
         @NotBlank(message = "A descrição é obrigatória")
         String descricao,
 
-        @NotBlank(message = "A disponibilidade é obrigatória")
+        @NotNull(message = "A disponibilidade é obrigatória")
         Boolean disponivel,
         OffsetDateTime dataCadastro
 ) {}

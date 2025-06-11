@@ -1,6 +1,6 @@
 package io.github.daninishikino.venda_carros.controller;
 
-import io.github.daninishikino.venda_carros.controller.DTO.UsuarioDTO;
+import io.github.daninishikino.venda_carros.controller.DTO.request.UsuarioDTO;
 import io.github.daninishikino.venda_carros.mapper.UsuarioMapper;
 import io.github.daninishikino.venda_carros.service.UsuarioService;
 import jakarta.validation.Valid;

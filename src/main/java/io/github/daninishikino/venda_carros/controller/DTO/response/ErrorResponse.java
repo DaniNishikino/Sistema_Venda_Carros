@@ -1,4 +1,4 @@
-package io.github.daninishikino.venda_carros.controller.DTO;
+package io.github.daninishikino.venda_carros.controller.DTO.response;
 
 import java.time.LocalDateTime;
 import java.util.List;
