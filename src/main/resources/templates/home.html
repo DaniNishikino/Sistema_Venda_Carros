@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>VendaCarros - Home</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/">VendaCarros</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link active" href="/home">Home</a>
+                </li>
+                <li class="nav-item" sec:authorize="hasRole('GERENTE')">
+                    <a class="nav-link" href="/veiculo/novo">Cadastrar Veículo</a>
+                </li>
+                <li class="nav-item" sec:authorize="hasAnyRole('GERENTE', 'VENDEDOR')">
+                    <a class="nav-link" href="/vendas/historico">Histórico de Vendas</a>
+                </li>
+                <li class="nav-item" sec:authorize="hasRole('GERENTE')">
+                    <a class="nav-link" href="/usuarios/admin/listar">Gerenciar Usuários</a>
+                </li>
+            </ul>
+            <ul class="navbar-nav">
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+                <li class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a class="nav-link" href="/usuarios/registo">Cadastre-se</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" href="/usuarios/perfil">Meu Perfil</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <form th:action="@{/logout}" method="post">
+                        <button class="nav-link btn btn-link" type="submit">Sair</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <h1 class="mb-4">Veículos Disponíveis</h1>
+
+    <div th:if="${#lists.isEmpty(veiculos) || #lists.isEmpty(veiculos.?[disponivel == true])}" class="alert alert-info">
+        Não há veículos disponíveis no momento.
+    </div>
+
+    <div class="row">
+        <div th:each="veiculo : ${veiculos}" th:if="${veiculo.disponivel}" class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${veiculo.marca + ' ' + veiculo.modelo}"></h5>
+                    <h6 class="card-subtitle mb-2 text-muted" th:text="${'Ano: ' + veiculo.anoFabricacao + '/' + veiculo.anoModelo}"></h6>
+                    <p class="card-text" th:text="${veiculo.descricao}"></p>
+                    <p class="card-text"><strong>Cor:</strong> <span th:text="${veiculo.cor}"></span></p>
+                    <p class="card-text"><strong>Placa:</strong> <span th:text="${veiculo.placa}"></span></p>
+                    <h6 class="card-subtitle mb-2 text-success" th:text="${'R$ ' + #numbers.formatDecimal(veiculo.preco, 1, 'POINT', 2, 'COMMA')}"></h6>
+
+
+                    <div class="d-flex justify-content-between">
+                        <a th:href="@{/veiculo/{placa}(placa=${veiculo.placa})}" class="btn btn-sm btn-primary">Detalhes</a>
+                        <a th:if="${veiculo.disponivel}" sec:authorize="hasAnyRole('GERENTE', 'VENDEDOR')"
+                           th:href="@{/vendas/realizar/{placa}(placa=${veiculo.placa})}"
+                           class="btn btn-sm btn-success">Realizar Venda</a>
+                    </div>
+
+                    <div sec:authorize="hasRole('GERENTE')" class="mt-2">
+                        <a th:href="@{/veiculo/editar/{placa}(placa=${veiculo.placa})}" class="btn btn-sm btn-warning">Editar</a>
+                        <a th:href="@{/veiculo/remover/{placa}(placa=${veiculo.placa})}"
+                           class="btn btn-sm btn-danger"
+                           onclick="return confirm('Tem certeza que deseja excluir este veículo?')">Excluir</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

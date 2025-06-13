@@ -3,6 +3,7 @@ package io.github.daninishikino.venda_carros.controller.handler;
 import io.github.daninishikino.venda_carros.controller.DTO.response.ErrorResponse;
 import io.github.daninishikino.venda_carros.exceptions.usuario.AcessoNegadoException;
 import io.github.daninishikino.venda_carros.exceptions.usuario.UsuarioNaoEncontradoException;
+import io.github.daninishikino.venda_carros.exceptions.usuario.UsuariosComVendasException;
 import io.github.daninishikino.venda_carros.exceptions.veiculo.VeiculoNaoDisponivelException;
 import io.github.daninishikino.venda_carros.exceptions.veiculo.VeiculoNaoEncontradoException;
 import io.github.daninishikino.venda_carros.exceptions.veiculo.VeiculosDadosSensiveisException;
@@ -30,6 +31,12 @@ public class GlobalExceptionHandler {
                                                                       HttpServletRequest request){
         String erro = "Não foi posssivel encontrar o usuario";
        return buildErrorResponse(e, HttpStatus.NOT_FOUND, List.of(erro), request);
+    }
+    @ExceptionHandler(UsuariosComVendasException.class)
+    public ResponseEntity<ErrorResponse> handleUsuariosComVendaException(UsuariosComVendasException e,
+                                                                     HttpServletRequest request){
+        String erro = "Não é possivel excluir o usuario que tenha venda cadastrada no sistema.";
+        return buildErrorResponse(e, HttpStatus.NOT_ACCEPTABLE,List.of(erro), request);
     }
     @ExceptionHandler(VeiculosDadosSensiveisException.class)
     public ResponseEntity<ErrorResponse> handleVeiculosDadosSensiveisException(VeiculosDadosSensiveisException e,

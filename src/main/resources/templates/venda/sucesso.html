@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Venda Realizada - VendaCarros</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/">VendaCarros</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/home">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/vendas/historico">Histórico de Vendas</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header bg-success text-white">
+                    <h3>Venda Realizada com Sucesso!</h3>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-success mb-4">
+                        <h4>Venda #<span th:text="${#strings.substring(venda.id, 0, 8)}"></span> concluída.</h4>
+                        <p>A venda foi registrada com sucesso no sistema.</p>
+                    </div>
+
+                    <h5 class="mb-3">Detalhes da Venda:</h5>
+
+                    <div class="row mb-2">
+                        <div class="col-md-4 fw-bold">Data/Hora:</div>
+                        <div class="col-md-8" th:text="${#temporals.format(venda.dataVenda, 'dd/MM/yyyy HH:mm')}"></div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-4 fw-bold">Veículo:</div>
+                        <div class="col-md-8" th:text="${venda.veiculoDTO.marca + ' ' + venda.veiculoDTO.modelo}"></div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-4 fw-bold">Placa:</div>
+                        <div class="col-md-8" th:text="${venda.veiculoDTO.placa}"></div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-4 fw-bold">Vendedor:</div>
+                        <div class="col-md-8" th:text="${venda.usuarioResponseDTO.nome}"></div>
+                    </div>
+                    <div class="row mb-2">
+                        <div class="col-md-4 fw-bold">Valor da Venda:</div>
+                        <div class="col-md-8 text-success fw-bold" th:text="${'R$ ' + #numbers.formatDecimal(venda.valorVenda, 1, 'POINT', 2, 'COMMA')}"></div>
+                    </div>
+
+                    <div class="d-grid gap-2 mt-4">
+                        <a href="/home" class="btn btn-primary">Voltar à Página Inicial</a>
+                        <a href="/vendas/historico" class="btn btn-secondary">Ver Histórico de Vendas</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

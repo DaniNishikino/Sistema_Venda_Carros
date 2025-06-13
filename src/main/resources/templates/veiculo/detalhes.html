@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalhes do Veículo - VendaCarros</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="/">VendaCarros</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/home">Home</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h3 th:text="${veiculo.marca + ' ' + veiculo.modelo}"></h3>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-md-4 fw-bold">Marca:</div>
+                        <div class="col-md-8" th:text="${veiculo.marca}"></div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 fw-bold">Modelo:</div>
+                        <div class="col-md-8" th:text="${veiculo.modelo}"></div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 fw-bold">Ano de Fabricação:</div>
+                        <div class="col-md-8" th:text="${veiculo.anoFabricacao}"></div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 fw-bold">Ano do Modelo:</div>
+                        <div class="col-md-8" th:text="${veiculo.anoModelo}"></div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 fw-bold">Cor:</div>
+                        <div class="col-md-8" th:text="${veiculo.cor}"></div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 fw-bold">Placa:</div>
+                        <div class="col-md-8" th:text="${veiculo.placa}"></div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 fw-bold">Preço:</div>
+                        <div class="col-md-8 text-success fw-bold" th:text="${'R$ ' + #numbers.formatDecimal(veiculo.preco, 1, 'POINT', 2, 'COMMA')}"></div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 fw-bold">Disponível:</div>
+                        <div class="col-md-8" th:text="${veiculo.disponivel ? 'Sim' : 'Não'}"></div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4 fw-bold">Descrição:</div>
+                        <div class="col-md-8" th:text="${veiculo.descricao}"></div>
+                    </div>
+
+                    <div class="d-flex justify-content-between mt-4">
+                        <a href="/home" class="btn btn-secondary">Voltar</a>
+
+                        <div sec:authorize="hasAnyRole('GERENTE', 'VENDEDOR')" th:if="${veiculo.disponivel}">
+                            <a th:href="@{/vendas/realizar/{placa}(placa=${veiculo.placa})}" class="btn btn-success">Realizar Venda</a>
+                        </div>
+
+                        <div sec:authorize="hasRole('GERENTE')">
+                            <a th:href="@{/veiculo/editar/{placa}(placa=${veiculo.placa})}" class="btn btn-warning">Editar</a>
+                            <a th:href="@{/veiculo/remover/{placa}(placa=${veiculo.placa})}"
+                               class="btn btn-danger"
+                               onclick="return confirm('Tem certeza que deseja excluir este veículo?')">Excluir</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

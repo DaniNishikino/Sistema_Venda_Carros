@@ -20,6 +20,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * Serviço responsável por operações relacionadas a vendas de veículos.
  * Gerencia o processo de venda e suas regras de negócio.
@@ -80,6 +83,24 @@ public class VendaService {
                 usuarioResponseDTO,
                 venda.getDataVenda(),
                 venda.getValorVenda());
+    }
+    public List<VendaResponseDTO> buscarTodasVendas() {
+        List<Venda> vendas = vendaRepository.findAll();
+        return vendas.stream().map(venda -> {
+            UsuarioResponseDTO usuarioDTO = new UsuarioResponseDTO(
+                    venda.getUsuario().getId(),
+                    venda.getUsuario().getNome(),
+                    venda.getUsuario().getLogin(),
+                    venda.getUsuario().getPapel()
+            );
+            return new VendaResponseDTO(
+                    venda.getId(),
+                    veiculoMapper.toDTO(venda.getVeiculo()),
+                    usuarioDTO,
+                    venda.getDataVenda(),
+                    venda.getValorVenda()
+            );
+        }).collect(Collectors.toList());
     }
 
 
